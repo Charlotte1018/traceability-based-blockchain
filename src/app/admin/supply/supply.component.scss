@@ -1,0 +1,58 @@
+:host ::ng-deep .logo {
+    height: 32px;
+    // background: #333;
+    border-radius: 6px;
+    margin: 16px;
+  }
+  
+  :host ::ng-deep .ant-layout-sider-collapsed .nav-text {
+    display: none;
+    font-size: 16px;
+  }
+  
+  :host ::ng-deep .ant-layout-sider-collapsed .ant-menu-submenu-title:after {
+    display: none;
+  }
+  
+  :host ::ng-deep .ant-layout-sider-collapsed .anticon {
+    font-size: 16px;
+    margin-left: 8px;
+  }
+  
+  :host ::ng-deep .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: color .3s;
+  }
+  
+  :host ::ng-deep .trigger:hover {
+    color: #108ee9;
+  }
+  :host ::ng-deep .ant-layout-sider {
+    // background: #3ba0e9;
+    background: #fff;
+    color: #fff;
+    line-height: 120px;
+    // box-shadow: 2px 2px 2px  #108ee9;
+  }
+  .header{
+    background: #fff; 
+    padding:0;
+  }
+  .main-body{
+    margin: 15px 15px 0 15px;
+    .main-content{
+      padding:24px; 
+      background: #fff; 
+      // min-height: 685px;
+      //如果需要控制高度的话，请写一个函数 window.screen.height-200-15 px；
+      // min-height: 835px;
+    }
+  }
+  .footer {
+    text-align: center;
+    font-size: 12px;
+  }
+  

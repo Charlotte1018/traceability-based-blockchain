@@ -4,11 +4,16 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 //Component
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { AboutComponent } from './components/about/about.component';
+//user
 import {UserComponent} from './user/user.component';
 import {UserLoginComponent} from './user/user-login/user-login.component';
 import {UserRegisterComponent} from './user/user-register/user-register.component';
+//admin
+import {AdminComponent} from './admin/admin.component';
+import {SupplyComponent} from './admin/supply/supply.component';
+import {SaleComponent} from './admin/sale/sale.component';
+import {StorageComponent} from './admin/storage/storage.component';
+
 import { ApiService } from './shared';
 import { routing } from './app.routing';
 //Service
@@ -29,11 +34,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   declarations: [
     AppComponent,
-    HomeComponent,
-    AboutComponent,
+
+    //user
     UserComponent,
     UserLoginComponent,
     UserRegisterComponent,
+    
+    //admin
+    AdminComponent,
+    SupplyComponent,
+    SaleComponent,
+    StorageComponent,
     ],
   providers: [
     ApiService,

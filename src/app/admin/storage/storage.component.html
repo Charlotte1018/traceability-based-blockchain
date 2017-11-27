@@ -1,0 +1,59 @@
+<nz-layout>
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzWidth="250">
+      <div class="logo">
+      </div>
+      <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
+        <li nz-menu-item>
+          <span>
+            <i class="anticon anticon-home"></i>
+            <span class="nav-text">Home</span>
+          </span>
+        </li>
+        <li nz-submenu>
+          <span title>
+            <i class="anticon anticon-user"></i>
+            <span class="nav-text">User</span>
+          </span>
+          <ul>
+            <li nz-menu-item>
+              <a [routerLink]="['home']">Home</a>
+            </li>
+            <li nz-menu-item>
+              <a [routerLink]="['about']">About</a>
+            </li>
+            <li nz-menu-item>
+              <a [routerLink]="['atest']">About</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu>
+          <span title>
+            <i class="anticon anticon-team"></i>
+            <span class="nav-text">Team</span>
+          </span>
+          <ul>
+            <li nz-menu-item><a [routerLink]="['home/about']">About</a></li>
+            <li nz-menu-item>Team 2</li>
+          </ul>
+        </li>
+        <li nz-menu-item>
+          <span>
+            <i class="anticon anticon-file"></i>
+            <span class="nav-text"><a [routerLink]="['about']">Login</a></span>
+          </span>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header class="header">
+        <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+        <span>粮食溯源平台|储粮企业管理系统</span>
+      </nz-header>
+      <nz-content class="main-body">
+        <div class="main-content" [ngStyle]="{'min-height': minheight+'px'}">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+      <nz-footer class="footer">北工大区块链小组 ©2017 Implement By Angular</nz-footer>
+    </nz-layout>
+  </nz-layout>
