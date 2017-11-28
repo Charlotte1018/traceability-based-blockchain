@@ -1,7 +1,7 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 //Component
 import { AppComponent } from './app.component';
 //user
@@ -50,7 +50,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ApiService,
     HttpService,
     Web3Service,
-    UserService
+    UserService,
+    FormBuilder,
+    Validators
   ],
   bootstrap: [AppComponent]
 })

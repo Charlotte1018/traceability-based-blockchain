@@ -35,13 +35,13 @@ export class Web3Service {
             // this.ManagementAbi = JSON.stringify(res.abi);
             this.ManagementAbi = res.abi;
             console.log(this.ManagementAbi);
-        })
+        });
     }
     getManagement(): any {
         let Management = {
             'ContractAddress': this.ManagementContractAddress,
             'abi': this.ManagementAbi
-        }
+        };
         return Management;
     }
     getStockCodeAbi(): any {
@@ -50,13 +50,13 @@ export class Web3Service {
         }).then((res) => {
             // this.StockCodeAbi = JSON.stringify(res.abi);
             console.log(this.StockCodeAbi);
-        })
+        });
     }
     getStockCode(): any {
         let StockCode = {
             'ContractAddress': this.StockCodeContractAddress,
             'abi': this.StockCodeAbi
-        }
+        };
         return StockCode;
     }
     /**
@@ -69,6 +69,7 @@ export class Web3Service {
         return this.ManagementContractInstance;
     }
     /**
+     * @param StockName
     * 返回StockCodeContractInstance实例
     * @returns {[*]}
     */

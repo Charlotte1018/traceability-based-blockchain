@@ -64,9 +64,14 @@ const routes: Routes = [
       }
     ]
   },
+  // {
+  //   path: '**',
+  //   redirectTo: 'admin/supply',
+  //   pathMatch: 'full'
+  // },
   {
     path: '**',
-    redirectTo: 'admin/supply',
+    redirectTo: 'user/login',
     pathMatch: 'full'
   },
 ];

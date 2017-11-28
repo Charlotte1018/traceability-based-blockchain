@@ -1,3 +1,27 @@
-<h1>
-    UserLoginComponent
-</h1>
+<div class="background" [ngStyle]="{'height': height+'px','width': width+'px'}">
+    <div nz-row>
+        <div nz-col [nzMd]="{ span: 6, offset: 9 }" class="login-card">
+            <div class="body ">
+                <div class="logo" nz-row>
+                    <h3 nz-col [nzMd]="{ span: 4, offset: 11 }">登陆</h3>
+                    <!-- <img src="/img/avatar1.jpg" alt=""> -->
+                </div>
+
+                <form action="" nz-col [nzMd]="{ span: 16, offset: 4 }" class="form-group">
+                    <div nz-row class="pt">
+                        <span nz-col [nzMd]="4">用户名</span>
+                        <input nz-col [nzMd]="20" class="form-control" required placeholder="请输入用户名">
+                    </div>
+                    <div nz-row class="pt">
+                        <span nz-col [nzMd]="4">密码</span>
+                        <input nz-col [nzMd]="20" class="form-control" required placeholder="请输入密码">
+                    </div>
+                    <div class="pt">
+                        <button nz-col [nzMd]="{ span: 16, offset: 4 }"  class="btn btn-success">登陆</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

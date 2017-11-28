@@ -40,12 +40,14 @@
   .header{
     background: #fff; 
     padding:0;
+    box-shadow: 2px 2px 1px  rgba(0, 0, 0, 0.2);
   }
   .main-body{
     margin: 15px 15px 0 15px;
     .main-content{
       padding:24px; 
       background: #fff; 
+      box-shadow: 2px 2px 1px  rgba(0, 0, 0, 0.2);
       // min-height: 685px;
       //如果需要控制高度的话，请写一个函数 window.screen.height-200-15 px；
       // min-height: 835px;
