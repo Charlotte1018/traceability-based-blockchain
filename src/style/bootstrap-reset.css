@@ -130,6 +130,9 @@ a:hover {
 input, textarea, select, button {
     outline: none !important;
 }
+input{
+    padding-left: 10px;
+}
 
 /*list*/
 

@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 //Component
 import { AppComponent } from './app.component';
+import {HomeComponent} from './components/home/home.component';
 //user
 import {UserComponent} from './user/user.component';
 import {UserLoginComponent} from './user/user-login/user-login.component';
@@ -34,7 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   declarations: [
     AppComponent,
-
+    HomeComponent,
     //user
     UserComponent,
     UserLoginComponent,

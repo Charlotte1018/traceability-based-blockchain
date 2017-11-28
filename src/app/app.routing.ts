@@ -1,5 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 
+import {HomeComponent} from './components/home/home.component';
+
 /*
 *user
 */
@@ -47,7 +49,13 @@ const routes: Routes = [
     children:[
       {
         path:'supply',
-        component:SupplyComponent
+        component:SupplyComponent,
+        children:[
+          {
+            path:'home',
+            component:HomeComponent
+          }
+        ]
       },
       {
         path:'sale',
@@ -64,16 +72,16 @@ const routes: Routes = [
       }
     ]
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'admin/supply',
-  //   pathMatch: 'full'
-  // },
   {
     path: '**',
-    redirectTo: 'user/login',
+    redirectTo: 'admin/supply',
     pathMatch: 'full'
   },
+  // {
+  //   path: '**',
+  //   redirectTo: 'user/login',
+  //   pathMatch: 'full'
+  // },
 ];
 
 export const routing = RouterModule.forRoot(routes);

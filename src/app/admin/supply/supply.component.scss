@@ -1,6 +1,6 @@
 :host ::ng-deep .logo {
     height: 32px;
-    // background: #333;
+    background: #333;
     border-radius: 6px;
     margin: 16px;
   }
@@ -32,7 +32,8 @@
   }
   :host ::ng-deep .ant-layout-sider {
     // background: #3ba0e9;
-    background: #fff;
+    background: #333;
+    // background: #fff;
     color: #fff;
     line-height: 120px;
     // box-shadow: 2px 2px 2px  #108ee9;

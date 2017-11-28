@@ -9,15 +9,19 @@
         margin-top: 20%; /*偏移*/
         border-radius: 5px;
         box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+        input{
+            padding-left: 10px;
+        }
         .body{
             .logo{
-                padding:20px;
+                padding:20px 0 0 0;
                 h3{
-                    color: #757373
+                    color: #757373;
                 }
             }
             .pt{
                 padding-top: 30px;
+                
             }
             span{
                 font-size: 14px;

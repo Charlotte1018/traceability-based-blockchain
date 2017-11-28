@@ -1,4 +1,17 @@
-<p>
-  Home Works!
-</p>
-<nz-input></nz-input>
+<div class="wrap">
+  <h1>网站表单</h1>
+  <div class="divider mt"></div>
+  <div class="center">
+    <form>
+      <div class="">
+        <div *ngFor='let form of forms' nz-row class="mt">
+          <label for="name" class="label" nz-col [nzMd]="{ span: 1 }">{{form.name}}</label>
+          <input type="text" class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control" id="name" required placeholder="{{form.placeholder}}">
+        </div>
+
+      </div>
+      <button type="submit" class="btn btn-success mt">提交</button>
+    </form>
+  </div>
+
+</div>

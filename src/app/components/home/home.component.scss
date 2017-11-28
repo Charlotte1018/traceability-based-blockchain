@@ -1,4 +1,28 @@
 // component styles are encapsulated and only applied to their components
-* {
-  color: #FFEF00;
+.wrap{
+  margin :0 auto;
+}
+.divider{
+  // border:1px solid #949393 ;
+  box-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+  height: 1px;
+}
+.mt{
+  margin-top: 20px;
+}
+.pt{
+  padding-top: 20px;
+}
+.label{
+  font-size: 14px;
+  color: #5a5858;
+  // border: 1px solid red;
+}
+input{
+ padding-left: 10px;
+//  border: 1px solid red;
+}
+.center{
+  margin-left: 25%;
+  margin-top: 50px;
 }
