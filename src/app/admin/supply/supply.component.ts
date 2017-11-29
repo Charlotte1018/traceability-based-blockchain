@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-supply',
@@ -12,6 +12,10 @@ export class SupplyComponent implements OnInit {
 
   ngOnInit() {
     this.heightResize();
+  }
+  @HostListener('window:resize', ['$event.target']) 
+  ngResize() { 
+    this.minheight=window.screen.height-200-15;
   }
   heightResize(){
     this.minheight=window.screen.height-200-15;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-storage',
@@ -9,7 +9,10 @@ export class StorageComponent implements OnInit {
   minheight;
   constructor() {
   }
-
+  @HostListener('window:resize', ['$event.target']) 
+  ngResize() { 
+    this.minheight=window.screen.height-200-15;
+  }
   ngOnInit() {
     this.heightResize();
   }

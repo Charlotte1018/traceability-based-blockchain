@@ -38,10 +38,10 @@ contract UserManagement{
      * 仓库基本信息注册
      * 
      */
-     function registerBasicInfo(string stockName,uint stockId,string stockType,uint inventory,
-                                uint stockNum,uint storeRoomNum,uint posNum) OnlyRegistered {
+     function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
+                                uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode) OnlyRegistered {
          coStockBasicInformation = new CoStockBasicInformation(msg.sender);
-         coStockBasicInformation.registerBasicInfo(stockName,stockId,stockType,inventory,stockNum,storeRoomNum,posNum);
+         coStockBasicInformation.registerBasicInfo(_stockName,_stockId,_stockType,_inventory,_stockNum,_storeRoomNum,_posNum,_qrCode);
          stockIn = new StockIn(msg.sender);
          stockOut = new StockOut(msg.sender);
          adminManagement.setStockOutAddress(msg.sender,stockOut);
@@ -54,12 +54,31 @@ contract UserManagement{
      * 出库
      * 
      */ 
-     function sell(address _buyer,string stockName,uint quantity) OnlyRegistered {
-         stockOut = StockOut(adminManagement.getStockOutAddress(msg.sender));
-         coStockBasicInformation = CoStockBasicInformation(adminManagement.getStockBasicAddress(msg.sender));
-         stockOut.sell(msg.sender,coStockBasicInformation,_buyer,stockName,quantity);
+     function sell(address _buyer,string _buyerName,string _stockName,uint _quantity) OnlyRegistered {
+        stockOut = StockOut(adminManagement.getStockOutAddress(msg.sender));
+        coStockBasicInformation = CoStockBasicInformation(adminManagement.getStockBasicAddress(msg.sender));
+        stockOut.sell(coStockBasicInformation, _buyer, _buyerName, _stockName, _quantity);
      }
+     
+     
+    /**
+     * 入库
+     * 
+     */ 
+    function store(address _seller,string _sellerName,string _stockName,uint _quantity,uint _qrCode) OnlyRegistered{
+        stockIn = StockIn(adminManagement.getStockInAddress(msg.sender));
+        coStockBasicInformation = CoStockBasicInformation(adminManagement.getStockBasicAddress(msg.sender));
+        stockIn.store(coStockBasicInformation, _seller, _sellerName, _stockName, _quantity, _qrCode);
+    }
     
+    
+    /**
+     * 溯源
+     * 
+     */ 
+    // function trace(uint qrCode){
+        
+    // }
     
     
 }
@@ -153,6 +172,10 @@ contract AdminManagement{
         bool flag = register.getResisterStatus();
     }
     
+    // function trace(address _user,uint _qrCode){
+    //   stockInAddress =  
+    // }
+    
 }
 
 /**
@@ -175,9 +198,11 @@ contract CoStockBasicInformation{
        uint stockNum;
        uint inventory;
        uint storeRoomNum;
+       //厫间号
        uint posNum;
        //此处需要拼接！！！！！！
        uint posCode;
+       uint qrCode;
     }
     
     
@@ -187,7 +212,7 @@ contract CoStockBasicInformation{
     
     
     function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
-                                uint _stockNum,uint _storeRoomNum,uint _posNum){
+                                uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode){
         for(uint i = 0 ; i < stockName.length ; i++ ){
             if(StringUtils.equal(stockName[i],_stockName)) throw;
         }
@@ -198,15 +223,23 @@ contract CoStockBasicInformation{
         stocks[_stockName].stockNum = _stockNum;
         stocks[_stockName].storeRoomNum = _storeRoomNum;
         stocks[_stockName].posNum = _posNum;
+        stocks[_stockName].qrCode = _qrCode;
     }
     
     
-    function getStock(){
-        
+    function getStockInventory(string _stockName) returns(uint) {
+        return stocks[_stockName].inventory;
     }
     
     
+    function getStockQrCode(string _stockName) returns(uint){
+        return stocks[_stockName].qrCode;
+    }
     
+    
+    function updateInventory(string _stockName,uint _inventory){
+        stocks[_stockName].inventory = _inventory;
+    }
     
     
 }
@@ -233,7 +266,7 @@ contract Register{
     
     
     function Register(address _owner){
-        owner = owner;
+        owner = _owner;
     }
     
    
@@ -284,14 +317,74 @@ contract Register{
 contract StockIn{
     
     address public owner;
+    uint public storeQuantity = 0;
+    address[] sellers;
     
    
-    
     function StockIn(address _owner){
         owner = _owner;
     }
     
+    //入库记录
+    //卖家 => 入库详单
+    mapping(address => StockInInfo[]) storeRecord;
     
+    
+    struct StockInInfo{
+        string stockName;
+        address seller;
+        string sellerName;
+        uint quantity;
+        
+        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
+        uint qrCode;
+    }
+    
+    
+    function store(CoStockBasicInformation _stockBasicInfo,address _seller,string _sellerName,string _stockName,uint _quantity,uint _qrCode){
+        uint _inventory = _stockBasicInfo.getStockInventory(_stockName);
+        _stockBasicInfo.updateInventory(_stockName,_inventory + _quantity);
+        
+        StockInInfo stockInInfo;
+        
+        if (sellers.length == 0){
+            
+             stockInInfo.stockName = _stockName;
+             stockInInfo.seller = _seller;
+             stockInInfo.sellerName = _sellerName;
+             stockInInfo.quantity = _quantity;
+             stockInInfo.qrCode = _qrCode;
+             storeRecord[_seller].push(stockInInfo);
+             storeQuantity++;
+             
+        } else {
+            
+            bool flag = false;
+            
+            for(uint i = 0 ; i < sellers.length ; i++){
+                
+                if(sellers[i] == _seller){
+                    flag = true;
+                    break;
+                }
+                
+            }
+            
+            if(flag == false){
+                sellers.push(_seller);
+            }
+            
+             stockInInfo.stockName = _stockName;
+             stockInInfo.seller = _seller;
+             stockInInfo.sellerName = _sellerName;
+             stockInInfo.quantity = _quantity;
+             stockInInfo.qrCode = _qrCode;
+             storeRecord[_seller].push(stockInInfo);
+             storeQuantity++; 
+            
+        }
+        
+    }
     
 }
 
@@ -305,18 +398,21 @@ contract StockOut{
     CoStockBasicInformation public coStockBasicInformation;
     
     address public owner;
-    uint public sellID = 0;
+    uint public sellQuantity = 0;
+    address[] public buyers;
     
     //销售记录
-    //记录编号 => (买家 => 出货单详情)
-    mapping(uint => mapping(address => StockOutInfo)) sellRecord;
+    //买家 => 出货单详情
+    mapping(address => StockOutInfo[]) sellRecord;
     
     struct StockOutInfo{
         string stockName;
         address buyer;
         string buyerName;
         uint quantity;
-        uint qualityId;
+        
+        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
+        uint qrCode;
     }
     
     
@@ -325,8 +421,50 @@ contract StockOut{
     }
     
     
-    function sell(CoStockBasicInformation _stockBasicInfo,address _buyer,string _stockName,uint _quantity){
-        _stockBasicInfo.getStock();
+    function sell(CoStockBasicInformation _stockBasicInfo,address _buyer,string _buyerName,string _stockName,uint _quantity){
+        uint _inventory = _stockBasicInfo.getStockInventory(_stockName);
+        if(_inventory < _quantity) throw;
+        _stockBasicInfo.updateInventory(_stockName,_inventory - _quantity);
+        
+        StockOutInfo stockOutInfo;
+        
+        if (buyers.length == 0){
+            
+             stockOutInfo.stockName = _stockName;
+             stockOutInfo.buyer = _buyer;
+             stockOutInfo.buyerName = _buyerName;
+             stockOutInfo.quantity = _quantity;
+             stockOutInfo.qrCode = _stockBasicInfo.getStockQrCode(_stockName);
+             sellRecord[_buyer].push(stockOutInfo);
+             sellQuantity++;
+             
+        } else {
+            
+            bool flag = false;
+            
+            for(uint i = 0 ; i < buyers.length ; i++){
+                
+                if(buyers[i] == _buyer){
+                    flag = true;
+                    break;
+                }
+                
+            }
+            
+            if(flag == false){
+                buyers.push(_buyer);
+            }
+            
+             stockOutInfo.stockName = _stockName;
+             stockOutInfo.buyer = _buyer;
+             stockOutInfo.buyerName = _buyerName;
+             stockOutInfo.quantity = _quantity;
+             stockOutInfo.qrCode = _stockBasicInfo.getStockQrCode(_stockName);
+             sellRecord[_buyer].push(stockOutInfo);
+             sellQuantity++;
+            
+        }
+        
         
     }
 }
@@ -339,13 +477,16 @@ library StringUtils {
         bytes memory a = bytes(_a);
         bytes memory b = bytes(_b);
         uint minLength = a.length;
-        if (b.length < minLength) minLength = b.length;
+        if (b.length < minLength) 
+            minLength = b.length;
         //@todo unroll the loop into increments of 32 and do full 32 byte comparisons
         for (uint i = 0; i < minLength; i ++)
+        {
             if (a[i] < b[i])
                 return -1;
             else if (a[i] > b[i])
                 return 1;
+        }
         if (a.length < b.length)
             return -1;
         else if (a.length > b.length)

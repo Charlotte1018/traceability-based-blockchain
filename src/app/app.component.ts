@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener} from '@angular/core';
 import { ApiService } from './shared';
 import { HttpService, Web3Service } from './service';
 import '../style/app.scss';
@@ -17,6 +17,10 @@ export class AppComponent implements OnInit {
   constructor(private api: ApiService,private web3Service: Web3Service,private httpService: HttpService
   ) {
     this.title = this.api.title;
+  }
+  @HostListener('window:resize', ['$event.target']) 
+  ngResize() { 
+   
   }
   ngOnInit() {
     // this.connectGeth();
