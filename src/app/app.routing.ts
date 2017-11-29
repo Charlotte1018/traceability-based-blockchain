@@ -1,23 +1,26 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import {HomeComponent} from './components/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 /*
 *user
 */
 
-import {UserComponent} from './user/user.component';
-import {UserLoginComponent} from './user/user-login/user-login.component';
-import {UserRegisterComponent} from './user/user-register/user-register.component';
+import { UserComponent } from './user/user.component';
+import { UserLoginComponent } from './user/user-login/user-login.component';
+import { UserRegisterComponent } from './user/user-register/user-register.component';
 
 /*
 *admin
 */
 
-import {AdminComponent} from './admin/admin.component';
-import {SupplyComponent} from './admin/supply/supply.component';
-import {SaleComponent} from './admin/sale/sale.component';
-import {StorageComponent} from './admin/storage/storage.component';
+import { AdminComponent } from './admin/admin.component';
+import { SupplyComponent } from './admin/supply/supply.component';
+import { SaleComponent } from './admin/sale/sale.component';
+import { StorageComponent } from './admin/storage/storage.component';
+
+//common
+import { RegisterComponent } from './components/register/register.component';
 
 /*
 *routes
@@ -27,48 +30,52 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserComponent,
-    children:[
+    children: [
       {
-        path:'register',
-        component:UserRegisterComponent
+        path: 'register',
+        component: UserRegisterComponent
       },
       {
-        path:'login',
-        component:UserLoginComponent
+        path: 'login',
+        component: UserLoginComponent
       },
       {
-        path:'',
-        redirectTo:'login',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
       }
     ]
   },
   {
     path: 'admin',
     component: AdminComponent,
-    children:[
+    children: [
       {
-        path:'supply',
-        component:SupplyComponent,
-        children:[
+        path: 'supply',
+        component: SupplyComponent,
+        children: [
           {
-            path:'home',
-            component:HomeComponent
-          }
+            path: 'home',
+            component: HomeComponent
+          },
+          {
+            path: 'register',
+            component: RegisterComponent
+          },
         ]
       },
       {
-        path:'sale',
-        component:SaleComponent
+        path: 'sale',
+        component: SaleComponent
       },
       {
-        path:'storage',
-        component:StorageComponent
+        path: 'storage',
+        component: StorageComponent
       },
       {
-        path:'',
-        redirectTo:'admin/supply',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'admin/supply',
+        pathMatch: 'full'
       }
     ]
   },

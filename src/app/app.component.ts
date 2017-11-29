@@ -23,9 +23,9 @@ export class AppComponent implements OnInit {
    
   }
   ngOnInit() {
-    // this.connectGeth();
+    this.connectGeth();
     // this.getFetch();
-    // this.getAccounts();
+    this.getAccounts();
   }
   connectGeth() {
     this.web3Service.connect('http://localhost:8545');

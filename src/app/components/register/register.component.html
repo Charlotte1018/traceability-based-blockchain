@@ -1,0 +1,57 @@
+<div class="wrap">
+  <h1>企业注册</h1>
+  <div class="divider mt"></div>
+  <div class="center">
+    <form>
+      <!-- <div class="">
+          <div *ngFor='let form of forms' nz-row class="mt">
+            <label for="name" class="label" nz-col [nzMd]="{ span: 2 }">{{form.name}}</label>
+            <input type="text" [(ngModel)]='form.bind' name='form.bind' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control" id="name" required placeholder="{{form.placeholder}}">
+          </div>
+        </div> -->
+        <div nz-row class="mt">
+            <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">账户地址</label>
+            <input type="text" [(ngModel)]='registerInfo.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+              id="name" required placeholder="请输入账户地址">
+          </div>
+
+          <div nz-row class="mt">
+              <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">账户密码</label>
+              <input type="text" [(ngModel)]='registerInfo.password' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                id="name" required placeholder="请输入账户密码">
+            </div>
+      <div nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">企业名称</label>
+        <input type="text" [(ngModel)]='registerInfo.coName' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入企业名称">
+      </div>
+      <div  nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">企业地址</label>
+        <input type="text" [(ngModel)]='registerInfo.coAddress' name='registerInfo.coAddress' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入企业地址">
+      </div>
+      <div nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">法人代表</label>
+        <input type="text" [(ngModel)]='registerInfo.corpName' name='registerInfo.corpName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入企业法人代表">
+      </div>
+      <div nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">身份证号</label>
+        <input type="text" [(ngModel)]='registerInfo.corpId' name='registerInfo.corpId' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入企业法人代表身份证号">
+      </div>
+      <div nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">电话</label>
+        <input type="text" [(ngModel)]='registerInfo.tel' name='registerInfo.tel' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入电话">
+      </div>
+      <div  nz-row class="mt">
+        <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">传真</label>
+        <input type="text" [(ngModel)]='registerInfo.fax' name='registerInfo.fax' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+          id="name" required placeholder="请输入传真">
+      </div>
+      <button type="submit" class="btn btn-success mt" (click)='register()'>注册</button>
+    </form>
+  </div>
+
+</div>

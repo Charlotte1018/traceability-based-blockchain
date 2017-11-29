@@ -1,8 +1,8 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.10;
 
 /**
- * 涉粮企业管理合约
- * 主要功能：注册，入库管理，出库管理
+ * …Ê¡∏∆Û“µπ‹¿Ì∫œ‘º
+ * ÷˜“™π¶ƒ‹£∫◊¢≤·£¨»Îø‚π‹¿Ì£¨≥ˆø‚π‹¿Ì
  * 
  */ 
 contract UserManagement{
@@ -18,13 +18,13 @@ contract UserManagement{
     
     
     modifier OnlyRegistered(){
-        if (!adminManagement.getResisterStatus(msg.sender)) throw;
+        if (!adminManagement.getResisterStatus(msg.sender)) return;
         _;
     }
     
     
     /**
-     * 用户注册申请
+     * ”√ªß◊¢≤·…Í«Î
      * 
      */
     function register(string coName,string coAddress,string corpName,uint corpId,uint tel,uint fax){
@@ -35,7 +35,7 @@ contract UserManagement{
     
     
     /**
-     * 仓库基本信息注册
+     * ≤÷ø‚ª˘±æ–≈œ¢◊¢≤·
      * 
      */
      function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
@@ -51,7 +51,7 @@ contract UserManagement{
      
      
     /**
-     * 出库
+     * ≥ˆø‚
      * 
      */ 
      function sell(address _buyer,string _buyerName,string _stockName,uint _quantity) OnlyRegistered {
@@ -62,7 +62,7 @@ contract UserManagement{
      
      
     /**
-     * 入库
+     * »Îø‚
      * 
      */ 
     function store(address _seller,string _sellerName,string _stockName,uint _quantity,uint _qrCode) OnlyRegistered{
@@ -72,20 +72,11 @@ contract UserManagement{
     }
     
     
-    /**
-     * 溯源
-     * 
-     */ 
-    // function trace(uint qrCode){
-        
-    // }
-    
-    
 }
 
 /**
- * 系统管理员管理合约
- * 主要功能：管理用户注册
+ * œµÕ≥π‹¿Ì‘±π‹¿Ì∫œ‘º
+ * ÷˜“™π¶ƒ‹£∫π‹¿Ì”√ªß◊¢≤·
  * 
  */ 
 contract AdminManagement{
@@ -95,11 +86,12 @@ contract AdminManagement{
     mapping(address => StockIn) public stockInAddress;
     mapping(address => CoStockBasicInformation) public stockBasicAddress;
     
-    //用于遍历mapping中所有数据
-    //此处遍历所有申请注册的用户
+    //”√”⁄±È¿˙mapping÷–À˘”– ˝æ›
+    //¥À¥¶±È¿˙À˘”–…Í«Î◊¢≤·µƒ”√ªß
     address[] public addressArrays;
     
     address administrator;
+   
     
     
     
@@ -109,18 +101,19 @@ contract AdminManagement{
     
     
     modifier OnlyAdministrator(){
-        if(msg.sender != administrator) throw;
+        if(msg.sender != administrator) return;
         _;
     }
     
      /**
-     * 管理员处理注册信息
+     * π‹¿Ì‘±¥¶¿Ì◊¢≤·–≈œ¢
      * 
      */ 
     function reject(address _applicant) OnlyAdministrator{
         Register register = Register(registerAddress[_applicant]);
         register.reject();
     }
+    
     
     function approved(address _applicant) OnlyAdministrator{
         Register register = Register(registerAddress[_applicant]);
@@ -170,25 +163,22 @@ contract AdminManagement{
     function getResisterStatus(address _applicant) returns(bool){
         Register register = Register(registerAddress[_applicant]);
         bool flag = register.getResisterStatus();
+        return flag;
     }
-    
-    // function trace(address _user,uint _qrCode){
-    //   stockInAddress =  
-    // }
     
 }
 
 /**
- * 企业仓库信息合约
- * 主要功能：存储企业仓库基本信息
+ * ∆Û“µ≤÷ø‚–≈œ¢∫œ‘º
+ * ÷˜“™π¶ƒ‹£∫¥Ê¥¢∆Û“µ≤÷ø‚ª˘±æ–≈œ¢
  * 
  */ 
 contract CoStockBasicInformation{
     
-    using StringUtils for *;
+    //using StringUtils for *;
     
     address public owner;
-    //仓库
+    //≤÷ø‚
     mapping(string => StockBasicInfo) stocks;
     string[] public stockName;
     
@@ -198,9 +188,9 @@ contract CoStockBasicInformation{
        uint stockNum;
        uint inventory;
        uint storeRoomNum;
-       //厫间号
+       //Öêº‰∫≈
        uint posNum;
-       //此处需要拼接！！！！！！
+       //¥À¥¶–Ë“™∆¥Ω”£°£°£°£°£°£°
        uint posCode;
        uint qrCode;
     }
@@ -213,9 +203,9 @@ contract CoStockBasicInformation{
     
     function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
                                 uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode){
-        for(uint i = 0 ; i < stockName.length ; i++ ){
-            if(StringUtils.equal(stockName[i],_stockName)) throw;
-        }
+        // for(uint i = 0 ; i < stockName.length ; i++ ){
+        //     if(StringUtils.equal(stockName[i],_stockName)) return;
+        // }
         stockName.push(_stockName);
         stocks[_stockName].stockId = _stockId;
         stocks[_stockName].stockType = _stockType;
@@ -245,8 +235,8 @@ contract CoStockBasicInformation{
 }
 
 /**
- * 用户注册合约
- * 主要功能：注册业务具体实现
+ * ”√ªß◊¢≤·∫œ‘º
+ * ÷˜“™π¶ƒ‹£∫◊¢≤·“µŒÒæﬂÃÂ µœ÷
  * 
  */ 
 contract Register{
@@ -256,7 +246,7 @@ contract Register{
     address public owner;
     
     
-    //企业注册基本信息
+    //∆Û“µ◊¢≤·ª˘±æ–≈œ¢
     string public coName;
     string public coAddress;
     string public corpName;
@@ -310,8 +300,8 @@ contract Register{
 
 
 /**
- * 入库管理合约
- * 主要功能
+ * »Îø‚π‹¿Ì∫œ‘º
+ * ÷˜“™π¶ƒ‹
  * 
  */ 
 contract StockIn{
@@ -319,14 +309,15 @@ contract StockIn{
     address public owner;
     uint public storeQuantity = 0;
     address[] sellers;
+    StockInInfo stockInInfo;
     
    
     function StockIn(address _owner){
         owner = _owner;
     }
     
-    //入库记录
-    //卖家 => 入库详单
+    //»Îø‚º«¬º
+    //¬Ùº“ => »Îø‚œÍµ•
     mapping(address => StockInInfo[]) storeRecord;
     
     
@@ -336,7 +327,7 @@ contract StockIn{
         string sellerName;
         uint quantity;
         
-        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
+        //ºŸ…ËŒ™ø…“‘ ∂±¡∏ ≥µƒŒ®“ª¥˙¬Î£°£°£°£°£°£°£°£°£°£°£°
         uint qrCode;
     }
     
@@ -345,7 +336,7 @@ contract StockIn{
         uint _inventory = _stockBasicInfo.getStockInventory(_stockName);
         _stockBasicInfo.updateInventory(_stockName,_inventory + _quantity);
         
-        StockInInfo stockInInfo;
+       
         
         if (sellers.length == 0){
             
@@ -389,8 +380,8 @@ contract StockIn{
 }
 
 /**
- * 出库管理合约
- * 主要功能
+ * ≥ˆø‚π‹¿Ì∫œ‘º
+ * ÷˜“™π¶ƒ‹
  * 
  */ 
 contract StockOut{
@@ -400,9 +391,10 @@ contract StockOut{
     address public owner;
     uint public sellQuantity = 0;
     address[] public buyers;
+    StockOutInfo stockOutInfo;
     
-    //销售记录
-    //买家 => 出货单详情
+    //œ˙ €º«¬º
+    //¬Úº“ => ≥ˆªıµ•œÍ«È
     mapping(address => StockOutInfo[]) sellRecord;
     
     struct StockOutInfo{
@@ -411,7 +403,7 @@ contract StockOut{
         string buyerName;
         uint quantity;
         
-        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
+        //ºŸ…ËŒ™ø…“‘ ∂±¡∏ ≥µƒŒ®“ª¥˙¬Î£°£°£°£°£°£°£°£°£°£°£°
         uint qrCode;
     }
     
@@ -423,10 +415,10 @@ contract StockOut{
     
     function sell(CoStockBasicInformation _stockBasicInfo,address _buyer,string _buyerName,string _stockName,uint _quantity){
         uint _inventory = _stockBasicInfo.getStockInventory(_stockName);
-        if(_inventory < _quantity) throw;
+        if(_inventory < _quantity) return;
         _stockBasicInfo.updateInventory(_stockName,_inventory - _quantity);
         
-        StockOutInfo stockOutInfo;
+       
         
         if (buyers.length == 0){
             
@@ -477,16 +469,13 @@ library StringUtils {
         bytes memory a = bytes(_a);
         bytes memory b = bytes(_b);
         uint minLength = a.length;
-        if (b.length < minLength) 
-            minLength = b.length;
+        if (b.length < minLength) minLength = b.length;
         //@todo unroll the loop into increments of 32 and do full 32 byte comparisons
         for (uint i = 0; i < minLength; i ++)
-        {
             if (a[i] < b[i])
                 return -1;
             else if (a[i] > b[i])
                 return 1;
-        }
         if (a.length < b.length)
             return -1;
         else if (a.length > b.length)

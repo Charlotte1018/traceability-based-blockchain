@@ -14,6 +14,9 @@ import {AdminComponent} from './admin/admin.component';
 import {SupplyComponent} from './admin/supply/supply.component';
 import {SaleComponent} from './admin/sale/sale.component';
 import {StorageComponent} from './admin/storage/storage.component';
+//common
+import {RegisterComponent} from './components/register/register.component';
+
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -46,6 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SupplyComponent,
     SaleComponent,
     StorageComponent,
+    //common
+    RegisterComponent,
     ],
   providers: [
     ApiService,

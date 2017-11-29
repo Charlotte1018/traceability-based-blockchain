@@ -1,19 +1,27 @@
 import { Injectable } from "@angular/core";
 import { stringify } from "querystring";
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subject } from 'rxjs/Subject';
+
 //ABI
-import { ManagementAbi } from '../mockdata/ManagementAbi';
-import { StockCodeAbi } from '../mockdata/StockCodeAbi';
+import {
+    UserManagementAbi,
+    AdminManagementAbi,
+    CoStockBasicInformationAbi,
+    RegisterAbi,
+    StockInAbi,
+    StockOutAbi
+} from '../mockdata';
 
 let Web3 = require('web3');
 @Injectable()
 export class Web3Service {
     public web3;
-    public ManagementAbi = ManagementAbi;
-    public StockCodeAbi = StockCodeAbi;
-    public ManagementContractAddress = '0x392b366D6E51D803bc0cEC13C03c8c19686e2BF6';
-    public ManagementContractInstance;
-    public StockCodeContractAddress = '0xA7cf324d5ffD7F6217D47Aec0a481694E4Fb1B75';
-    public StockCodeContractInstance;
+    public UserManagementAbiAddress = '0x2E72cb03A06aFaE952E965471a9c8b840D29132d';
+    public UserManagementContractInstance;
+    public AdminManagementAddress = '0xC20d4dCCaEfa881e51d4ad5A9d12D4267d9966c2';
+    public AdminManagementContractInstance;
     /**
     * 连接geth客户端
     */
@@ -26,91 +34,65 @@ export class Web3Service {
     * @returns {[*]}
     */
     getWeb3(): any {
+        // console.log(this.acc)
         return this.web3;
     }
-    getManagementAbi(): any {
-        fetch('../../../build/contracts/Management.json').then((res) => {
-            return res.json();
-        }).then((res) => {
-            // this.ManagementAbi = JSON.stringify(res.abi);
-            this.ManagementAbi = res.abi;
-            console.log(this.ManagementAbi);
-        });
-    }
-    getManagement(): any {
-        let Management = {
-            'ContractAddress': this.ManagementContractAddress,
-            'abi': this.ManagementAbi
-        };
-        return Management;
-    }
-    getStockCodeAbi(): any {
-        fetch('../../../build/contracts/StockCode.json').then((res) => {
-            return res.json();
-        }).then((res) => {
-            // this.StockCodeAbi = JSON.stringify(res.abi);
-            console.log(this.StockCodeAbi);
-        });
-    }
-    getStockCode(): any {
-        let StockCode = {
-            'ContractAddress': this.StockCodeContractAddress,
-            'abi': this.StockCodeAbi
-        };
-        return StockCode;
-    }
     /**
-    * 返回ManagementContractInstance实例
+    * 返回UserManagementContractInstance实例
     * @returns {[*]}
     */
-    getManagementContractInstance(): any {
-        let ManagementContract = this.web3.eth.contract(this.ManagementAbi);
-        this.ManagementContractInstance = ManagementContract.at(this.ManagementContractAddress);
-        return this.ManagementContractInstance;
+    getUserManagementContractInstance(): any {
+        let UserManagementContract = this.web3.eth.contract(UserManagementAbi);
+        this.UserManagementContractInstance = UserManagementContract.at(this.UserManagementAbiAddress);
+        return this.UserManagementContractInstance;
     }
     /**
-     * @param StockName
-    * 返回StockCodeContractInstance实例
+    * 返回UserManagementContractInstance实例
     * @returns {[*]}
     */
-    getStockCodeContractInstances(StockName): any {
-        let coinbase=this.web3.eth.accounts[0];
-        this.unLockAccount(coinbase,"1");
-        this.ManagementContractInstance.getstockCodeAddress(StockName,{
-            from: coinbase,
-            gas: 10000000
-        });
+    getAdminManagementContractInstance(): any {
+        let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
+        this.AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
+        return this.AdminManagementContractInstance;
     }
-    getStockCodeContractInstance(){
-        let testStockCode=this.ManagementContractInstance.testStockCode.call();
-        // let StockCodeContractAddress=testStockCode||this.StockCodeContractAddress;
-        let StockCodeContractAddress=testStockCode;
-        let StockCodeContract = this.web3.eth.contract(this.StockCodeAbi);
-        this.StockCodeContractInstance = StockCodeContract.at(StockCodeContractAddress);
-        return this.StockCodeContractInstance;
+    /**
+     * 用户注册信息
+     * registerInfo ={
+    coName:'',
+    coAddress:'',
+    corpName:'',
+    corpId:'',
+    tel:'',
+    fax:'',
+  };
+     * @param register
+     * @param account
+     * @param password
+     * @returns {[*]}
+     */
+    Register(register:any){
+        let UserManagementContractInstance= this.UserManagementContractInstance;
+        this.unLockAccount(register.account,register.password);
+        UserManagementContractInstance.register(
+            register.coName,
+            register.coAddress,
+            register.corpName,
+            register.corpId,
+            register.tel,
+            register.fax,
+            {
+                from:register.account,
+                gas:10000000
+            });
     }
-    unLockAccount(acc:any,password:string):void{
-        this.web3.personal.unlockAccount(acc,password);
-    }
-    addStock(StockName){
-        let coinbase=this.web3.eth.accounts[0];
-        this.unLockAccount(coinbase,"1");
-        this.ManagementContractInstance.addStock(StockName,{
-            from: coinbase,
-            gas: 10000000
-        });
-    }
-    newRootCode(rootCode:any) {
-        let coinbase=this.web3.eth.accounts[0];
-        let rootOrganizationCode=rootCode.rootOrganizationCode;
-        let rootStockCode=rootCode.rootStockCode;
-        let rootCloseTime=rootCode.rootCloseTime;
-        let rootId=rootCode.rootId;
-        this.unLockAccount(coinbase,"1");
-        this.ManagementContractInstance.newRootCode(rootOrganizationCode,rootStockCode,
-            rootCloseTime,rootId,{
-            from: coinbase,
-            gas: 10000000
-        });
+
+    /**
+     * 解锁账户
+     * @param account
+     * @param password
+     * @returns {[*]}
+     */
+    unLockAccount(account?: any, password?: string): void {
+        this.web3.personal.unlockAccount(account, password);
     }
 }
