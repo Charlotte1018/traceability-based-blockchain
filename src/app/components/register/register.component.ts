@@ -57,6 +57,7 @@ export class RegisterComponent implements OnInit {
   web3;
   ngOnInit() {
     this.getWeb3();
+    this.web3Service.getRegister();
   }
   getContractInstance() {
     this.AdminManagementContractInstance = this.web3Service.getAdminManagementContractInstance();

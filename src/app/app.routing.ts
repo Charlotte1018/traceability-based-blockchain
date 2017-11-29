@@ -16,6 +16,12 @@ import { UserRegisterComponent } from './user/user-register/user-register.compon
 
 import { AdminComponent } from './admin/admin.component';
 import { SupplyComponent } from './admin/supply/supply.component';
+
+//supply
+import {RegisterBasicInfoComponent} from './admin/supply';
+
+
+
 import { SaleComponent } from './admin/sale/sale.component';
 import { StorageComponent } from './admin/storage/storage.component';
 
@@ -55,8 +61,8 @@ const routes: Routes = [
         component: SupplyComponent,
         children: [
           {
-            path: 'home',
-            component: HomeComponent
+            path: 'RegisterBasicInfo',
+            component: RegisterBasicInfoComponent
           },
           {
             path: 'register',
