@@ -13,7 +13,7 @@ import { UserRegisterComponent } from './user/user-register/user-register.compon
 import { AdminComponent } from './admin/admin.component';
 import { SupplyComponent } from './admin/supply/supply.component';
 //supply
-import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent } from './admin/supply';
+import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent ,sellStoreComponent} from './admin/supply';
 
 
 import { SaleComponent } from './admin/sale/sale.component';
@@ -55,7 +55,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RegisterBasicInfoComponent,
     SellComponent,
     StoreComponent,
-
+    sellStoreComponent,
+    
     AuditComponent,
 
     SaleComponent,

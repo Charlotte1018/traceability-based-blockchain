@@ -1,0 +1,60 @@
+<div class="wrap col-lg-12">
+    <h1>基本仓库信息查询</h1>
+    <div class="divider mt"></div>
+    <div class="center">
+        <form>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">查询</label>
+                <input type="text" [(ngModel)]='user.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入您的账户地址">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">密码</label>
+                <input type="text" [(ngModel)]='user.password' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入您的密码">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">仓库名称</label>
+                <input type="text" [(ngModel)]='basicStock.name' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入仓库名称">
+            </div>
+
+
+            <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockBasicInfo()'>查询仓库信息</button>
+        </form>
+    </div>
+</div>
+<div class="wrap mt col-lg-12">
+    <h1>出入库查询</h1>
+    <div class="divider mt"></div>
+    <div class="center">
+        <form>
+            <!-- <div class="">
+            <div *ngFor='let form of forms' nz-row class="mt">
+              <label for="name" class="label" nz-col [nzMd]="{ span: 2 }">{{form.name}}</label>
+              <input type="text" [(ngModel)]='form.bind' name='form.bind' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control" id="name" required placeholder="{{form.placeholder}}">
+            </div>
+          </div> -->
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">查询</label>
+                <input type="text" [(ngModel)]='user.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入您的账户地址">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">买家</label>
+                <input type="text" [(ngModel)]='buyer' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入买家账户">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">卖家</label>
+                <input type="text" [(ngModel)]='seller' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入卖家账户">
+            </div>
+
+
+            <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockInInfo()'>查询入库信息</button>
+            <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockOutInfo()'>查询出库信息</button>
+        </form>
+    </div>
+
+</div>

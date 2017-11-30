@@ -18,7 +18,8 @@ import { AdminComponent } from './admin/admin.component';
 import { SupplyComponent } from './admin/supply/supply.component';
 
 //supply
-import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent } from './admin/supply';
+import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent ,
+  sellStoreComponent,} from './admin/supply';
 
 
 
@@ -79,6 +80,10 @@ const routes: Routes = [
           {
             path: 'store',
             component: StoreComponent
+          },
+          {
+            path: 'search',
+            component: sellStoreComponent
           },
         ]
       },

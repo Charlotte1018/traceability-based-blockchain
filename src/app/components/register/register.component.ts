@@ -18,38 +18,6 @@ export class RegisterComponent implements OnInit {
     tel: 1,
     fax: 1,
   };
-  forms = [
-    {
-      name: '企业名称',
-      placeholder: '请输入企业名称',
-      bind: this.registerInfo.coName
-    },
-    {
-      name: '企业地址',
-      placeholder: '请输入企业地址',
-      bind: this.registerInfo.coAddress
-    },
-    {
-      name: '企业法人代表',
-      placeholder: '请输入企业法人代表',
-      bind: this.registerInfo.corpName
-    },
-    {
-      name: '企业法人身份证号',
-      placeholder: '请输入企业法人代表身份证号',
-      bind: this.registerInfo.corpId
-    },
-    {
-      name: '电话',
-      placeholder: '请输入电话',
-      bind: this.registerInfo.tel
-    },
-    {
-      name: '传真',
-      placeholder: '请输入传真',
-      bind: this.registerInfo.fax
-    },
-  ];
 
   constructor(private web3Service: Web3Service) {
     // Do stuff
@@ -57,7 +25,6 @@ export class RegisterComponent implements OnInit {
   web3;
   ngOnInit() {
     this.getWeb3();
-    this.web3Service.getRegister();
   }
   getContractInstance() {
     this.AdminManagementContractInstance = this.web3Service.getAdminManagementContractInstance();

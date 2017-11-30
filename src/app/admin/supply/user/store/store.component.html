@@ -23,12 +23,12 @@
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">来源对象</label>
                 <input type="text" [(ngModel)]='store._seller' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
-                    class="form-control" id="name" required placeholder="销售对象">
+                    class="form-control" id="name" required placeholder="来源对象">
             </div>
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">来源企业名称</label>
                 <input type="text" [(ngModel)]='store._sellerName' name='registerInfo.coAddress' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
-                    class="form-control" id="name" required placeholder="购粮者姓名">
+                    class="form-control" id="name" required placeholder="来源企业名称">
             </div>
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">货位号</label>
@@ -45,7 +45,7 @@
                 <input type="text" [(ngModel)]='store._qrCode' name='registerInfo.corpId' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
                     class="form-control" id="name" required placeholder="识别码">
             </div>
-            <button type="submit" class="btn btn-success mt" (click)='sells()'>创建入库信息</button>
+            <button type="submit" class="btn btn-success mt" (click)='stores()'>创建入库信息</button>
         </form>
     </div>
 

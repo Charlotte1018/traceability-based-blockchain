@@ -1,24 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Web3Service } from '../../../../service';
 @Component({
-    selector: 'admin-audit',
-    templateUrl: './audit.component.html',
-    styleUrls: ['./audit.component.scss']
+    selector: 'admin-sell-store',
+    templateUrl: './sell-and-storeInfo.component.html',
+    styleUrls: ['./sell-and-storeInfo.component.scss']
 })
-export class AuditComponent implements OnInit {
+export class sellStoreComponent implements OnInit {
     UserManagementContractInstance;
     AdminManagementContractInstance;
     registerAccounts;
     registerInfo;
-    registerStatus:string[]=['待审核','拒绝','审核通过'];
-    status;
+    stockInInfo;
+    stockOutInfo;
+    basicStock={
+        name:''
+    }
+    user={
+        account:'',
+        password:1,
+    }
+    stockName;
+    buyer;
+    seller;
     constructor(private web3Service: Web3Service) {
         // Do stuff
     }
     web3;
     ngOnInit() {
         this.getWeb3();
-        this.getRegister();
     }
     getContractInstance() {
         this.AdminManagementContractInstance = this.web3Service.getAdminManagementContractInstance();
@@ -38,13 +47,24 @@ export class AuditComponent implements OnInit {
         console.log(register);
     }
     reject(register) {
-        this.web3Service.reject(register);
         console.log(register);
     }
-    search(acc) {
-        this.registerInfo=this.web3Service.searchRegisterInfo(acc);
-        this.status=this.registerStatus[this.registerInfo[6]];
-        console.log(this.registerInfo);
+    searchStockBasicInfo(){
+        let acc=this.user.account;
+        let stockName=this.stockName;
+        this.web3Service.searchStockBasicInfo(acc,stockName);
+    }
+    searchStockInInfo() {
+        let acc=this.user.account;
+        let seller=this.seller;
+        this.stockInInfo=this.web3Service.searchStockInInfo(acc,seller);
+        // console.log(this.stockInInfo);
+    }
+    searchStockOutInfo() {
+        let acc=this.user.account;
+        let buyer=this.buyer;
+        this.stockOutInfo=this.web3Service.searchStockOutInfo(acc,buyer);
+        console.log(this.stockOutInfo);
     }
 
 }

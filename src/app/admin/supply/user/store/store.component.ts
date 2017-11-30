@@ -39,7 +39,7 @@ export class StoreComponent implements OnInit {
   stores() {
     let store = this.store;
     this.web3Service.store(store);
-    console.log(this.store);
+    console.log(store);
   }
 
 }

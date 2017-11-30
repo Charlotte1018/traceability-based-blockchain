@@ -33,6 +33,32 @@ export  const UserManagementAbi=[
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "getResisterInfo",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "stringUtils",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "adminManagement",

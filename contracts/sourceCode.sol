@@ -1,8 +1,8 @@
 pragma solidity ^0.4.10;
 
 /**
- * …Ê¡∏∆Û“µπ‹¿Ì∫œ‘º
- * ÷˜“™π¶ƒ‹£∫◊¢≤·£¨»Îø‚π‹¿Ì£¨≥ˆø‚π‹¿Ì
+ * 涉粮企业管理合约
+ * 主要功能：注册，入库管理，出库管理
  * 
  */ 
 contract UserManagement{
@@ -11,23 +11,35 @@ contract UserManagement{
     CoStockBasicInformation public coStockBasicInformation;
     StockIn public stockIn;
     StockOut public stockOut;
+    StringUtils public stringUtils;
     
     function UserManagement(){
-        adminManagement = new AdminManagement(msg.sender);
+        stringUtils = new StringUtils();
+        adminManagement = new AdminManagement(msg.sender,stringUtils);
+    }
+    
+    /**
+     * 判断是否注册
+     * 
+     */ 
+    modifier WhetherRegistered(uint flag){
+        if (flag == 0){
+            if (!adminManagement.getResisterStatus(msg.sender)) return;
+            _;
+        } else if(flag == 1) {
+           if(adminManagement.weatherRepetition(msg.sender) == true) return;
+           _;
+        }
     }
     
     
-    modifier OnlyRegistered(){
-        if (!adminManagement.getResisterStatus(msg.sender)) return;
-        _;
-    }
     
     
     /**
-     * ”√ªß◊¢≤·…Í«Î
+     * 用户注册申请
      * 
      */
-    function register(string coName,string coAddress,string corpName,uint corpId,uint tel,uint fax){
+    function register(string coName,string coAddress,string corpName,uint corpId,uint tel,uint fax) WhetherRegistered(1){
         Register _register = new Register(msg.sender);
         _register.register(coName,coAddress,corpName,corpId,tel,fax);
        adminManagement.setRegisterAddress(msg.sender,_register);
@@ -35,12 +47,22 @@ contract UserManagement{
     
     
     /**
-     * ≤÷ø‚ª˘±æ–≈œ¢◊¢≤·
+     * 用户查看注册信息
+     * 
+     */ 
+    function getResisterInfo() WhetherRegistered(0) returns(Register){
+        return adminManagement.getResisterInfo(msg.sender);
+    }
+    
+    
+    
+    /**
+     * 仓库基本信息注册
      * 
      */
      function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
-                                uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode) OnlyRegistered {
-         coStockBasicInformation = new CoStockBasicInformation(msg.sender);
+                                uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode) WhetherRegistered(0) {
+         coStockBasicInformation = new CoStockBasicInformation(msg.sender,stringUtils);
          coStockBasicInformation.registerBasicInfo(_stockName,_stockId,_stockType,_inventory,_stockNum,_storeRoomNum,_posNum,_qrCode);
          stockIn = new StockIn(msg.sender);
          stockOut = new StockOut(msg.sender);
@@ -51,10 +73,10 @@ contract UserManagement{
      
      
     /**
-     * ≥ˆø‚
+     * 出库
      * 
      */ 
-     function sell(address _buyer,string _buyerName,string _stockName,uint _quantity) OnlyRegistered {
+     function sell(address _buyer,string _buyerName,string _stockName,uint _quantity) WhetherRegistered(0) {
         stockOut = StockOut(adminManagement.getStockOutAddress(msg.sender));
         coStockBasicInformation = CoStockBasicInformation(adminManagement.getStockBasicAddress(msg.sender));
         stockOut.sell(coStockBasicInformation, _buyer, _buyerName, _stockName, _quantity);
@@ -62,10 +84,10 @@ contract UserManagement{
      
      
     /**
-     * »Îø‚
+     * 入库
      * 
      */ 
-    function store(address _seller,string _sellerName,string _stockName,uint _quantity,uint _qrCode) OnlyRegistered{
+    function store(address _seller,string _sellerName,string _stockName,uint _quantity,uint _qrCode) WhetherRegistered(0){
         stockIn = StockIn(adminManagement.getStockInAddress(msg.sender));
         coStockBasicInformation = CoStockBasicInformation(adminManagement.getStockBasicAddress(msg.sender));
         stockIn.store(coStockBasicInformation, _seller, _sellerName, _stockName, _quantity, _qrCode);
@@ -75,28 +97,32 @@ contract UserManagement{
 }
 
 /**
- * œµÕ≥π‹¿Ì‘±π‹¿Ì∫œ‘º
- * ÷˜“™π¶ƒ‹£∫π‹¿Ì”√ªß◊¢≤·
+ * 系统管理员管理合约
+ * 主要功能：管理用户注册
  * 
  */ 
 contract AdminManagement{
+    
+    StringUtils stringUtils;
     
     mapping(address => Register) public registerAddress;
     mapping(address => StockOut) public stockOutAddress;
     mapping(address => StockIn) public stockInAddress;
     mapping(address => CoStockBasicInformation) public stockBasicAddress;
     
-    //”√”⁄±È¿˙mapping÷–À˘”– ˝æ›
-    //¥À¥¶±È¿˙À˘”–…Í«Î◊¢≤·µƒ”√ªß
+    //用于遍历mapping中所有数据
+    //此处遍历所有申请注册的用户
     address[] public addressArrays;
+    uint public addressArraysNum = 0;
     
     address administrator;
    
     
     
     
-    function AdminManagement(address _administrator){
+    function AdminManagement(address _administrator,StringUtils _stringUtils){
         administrator = _administrator;
+        stringUtils = StringUtils(_stringUtils);
     }
     
     
@@ -106,7 +132,7 @@ contract AdminManagement{
     }
     
      /**
-     * π‹¿Ì‘±¥¶¿Ì◊¢≤·–≈œ¢
+     * 管理员处理注册信息
      * 
      */ 
     function reject(address _applicant) OnlyAdministrator{
@@ -124,6 +150,7 @@ contract AdminManagement{
     function setRegisterAddress(address _applicant,Register _register){
         registerAddress[_applicant] = _register;
         addressArrays.push(_applicant);
+        addressArraysNum++;
     }
     
     
@@ -166,21 +193,41 @@ contract AdminManagement{
         return flag;
     }
     
+    
+    function getResisterInfo(address _applicant) returns(Register){
+        return  Register(registerAddress[_applicant]);
+    }
+    
+    function weatherRepetition(address _applicant) returns(bool){
+        if(addressArrays.length == 0){
+            return false;
+        }
+        
+        for(uint i = 0 ; i < addressArrays.length ; i++){
+            if(_applicant == addressArrays[i]){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
 }
 
 /**
- * ∆Û“µ≤÷ø‚–≈œ¢∫œ‘º
- * ÷˜“™π¶ƒ‹£∫¥Ê¥¢∆Û“µ≤÷ø‚ª˘±æ–≈œ¢
+ * 企业仓库信息合约
+ * 主要功能：存储企业仓库基本信息
  * 
  */ 
 contract CoStockBasicInformation{
     
-    //using StringUtils for *;
+    StringUtils stringUtils;
     
     address public owner;
-    //≤÷ø‚
+    //仓库
     mapping(string => StockBasicInfo) stocks;
     string[] public stockName;
+    uint public stockNameNum = 0;
     
     struct StockBasicInfo{
        uint stockId;
@@ -188,25 +235,27 @@ contract CoStockBasicInformation{
        uint stockNum;
        uint inventory;
        uint storeRoomNum;
-       //Öêº‰∫≈
+       //厫间号
        uint posNum;
-       //¥À¥¶–Ë“™∆¥Ω”£°£°£°£°£°£°
+       //此处需要拼接！！！！！！
        uint posCode;
        uint qrCode;
     }
     
     
-    function CoStockBasicInformation(address _owner){
+    function CoStockBasicInformation(address _owner,StringUtils _stringUtils){
         owner = _owner;
+        stringUtils = StringUtils(_stringUtils);
     }
     
     
     function registerBasicInfo(string _stockName,uint _stockId,string _stockType,uint _inventory,
                                 uint _stockNum,uint _storeRoomNum,uint _posNum,uint _qrCode){
-        // for(uint i = 0 ; i < stockName.length ; i++ ){
-        //     if(StringUtils.equal(stockName[i],_stockName)) return;
-        // }
+        for(uint i = 0 ; i < stockName.length ; i++ ){
+            if(stringUtils.equal(stockName[i],_stockName)) return;
+        }
         stockName.push(_stockName);
+        stockNameNum ++;
         stocks[_stockName].stockId = _stockId;
         stocks[_stockName].stockType = _stockType;
         stocks[_stockName].inventory = _inventory;
@@ -235,24 +284,27 @@ contract CoStockBasicInformation{
 }
 
 /**
- * ”√ªß◊¢≤·∫œ‘º
- * ÷˜“™π¶ƒ‹£∫◊¢≤·“µŒÒæﬂÃÂ µœ÷
+ * 用户注册合约
+ * 主要功能：注册业务具体实现
  * 
  */ 
 contract Register{
     
     enum RegisterStatus{Auditing,Reject,Approved}
-    RegisterStatus public registerStatus;
+    RegisterStatus public registerStatus = registerInfo.rStatus;
+    RegisterInfo public registerInfo;
     address public owner;
     
-    
-    //∆Û“µ◊¢≤·ª˘±æ–≈œ¢
-    string public coName;
-    string public coAddress;
-    string public corpName;
-    uint public corpId;
-    uint public tel;
-    uint public fax;
+    struct RegisterInfo{
+        //企业注册基本信息
+        string coName;
+        string coAddress;
+        string corpName;
+        uint corpId;
+        uint tel;
+        uint fax;
+        RegisterStatus rStatus;
+    }
     
     
     function Register(address _owner){
@@ -261,34 +313,34 @@ contract Register{
     
    
     function register(string _coName,string _coAddress,string _corpName,uint _corpId,uint _tel,uint _fax){
-        coName = _coName;
-        coAddress = _coAddress;
-        corpName = _corpName;
-        corpId = _corpId;
-        tel = _tel;
-        fax = _fax;
-        registerStatus = RegisterStatus.Auditing;
+        registerInfo.coName = _coName;
+        registerInfo.coAddress = _coAddress;
+        registerInfo.corpName = _corpName;
+        registerInfo.corpId = _corpId;
+        registerInfo.tel = _tel;
+        registerInfo.fax = _fax;
+        registerInfo.rStatus = RegisterStatus.Auditing;
     }
     
     
-    function checkRegister() returns(string _coName,string _coAddress){
-        _coName = coName;
-        _coAddress = coAddress;
-    }
+    // function checkRegister() returns(){
+    //     _coName = coName;
+    //     _coAddress = coAddress;
+    // }
     
     
     function reject(){
-        registerStatus = RegisterStatus.Reject;
+        registerInfo.rStatus = RegisterStatus.Reject;
     }
     
     
     function approved(){
-        registerStatus = RegisterStatus.Approved;
+        registerInfo.rStatus = RegisterStatus.Approved;
     }
     
     
     function getResisterStatus() returns(bool){
-        if(registerStatus == RegisterStatus.Auditing || registerStatus == RegisterStatus.Reject){
+        if(registerInfo.rStatus == RegisterStatus.Auditing || registerInfo.rStatus == RegisterStatus.Reject){
             return false;
         }else{
             return true;
@@ -300,15 +352,17 @@ contract Register{
 
 
 /**
- * »Îø‚π‹¿Ì∫œ‘º
- * ÷˜“™π¶ƒ‹
+ * 入库管理合约
+ * 主要功能
  * 
  */ 
 contract StockIn{
     
     address public owner;
-    uint public storeQuantity = 0;
-    address[] sellers;
+    address[] public sellers;
+    uint public sellersNum = 0;
+    
+    
     StockInInfo stockInInfo;
     
    
@@ -316,9 +370,10 @@ contract StockIn{
         owner = _owner;
     }
     
-    //»Îø‚º«¬º
-    //¬Ùº“ => »Îø‚œÍµ•
-    mapping(address => StockInInfo[]) storeRecord;
+    //入库记录
+    //卖家 => 入库详单
+    mapping(address => StockInInfo[]) public storeRecord;
+    mapping(address => uint) public storeRecordNum;
     
     
     struct StockInInfo{
@@ -327,7 +382,7 @@ contract StockIn{
         string sellerName;
         uint quantity;
         
-        //ºŸ…ËŒ™ø…“‘ ∂±¡∏ ≥µƒŒ®“ª¥˙¬Î£°£°£°£°£°£°£°£°£°£°£°
+        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
         uint qrCode;
     }
     
@@ -346,7 +401,8 @@ contract StockIn{
              stockInInfo.quantity = _quantity;
              stockInInfo.qrCode = _qrCode;
              storeRecord[_seller].push(stockInInfo);
-             storeQuantity++;
+             storeRecordNum[_seller]++;
+             sellersNum++;
              
         } else {
             
@@ -363,6 +419,7 @@ contract StockIn{
             
             if(flag == false){
                 sellers.push(_seller);
+                sellersNum++;
             }
             
              stockInInfo.stockName = _stockName;
@@ -371,7 +428,7 @@ contract StockIn{
              stockInInfo.quantity = _quantity;
              stockInInfo.qrCode = _qrCode;
              storeRecord[_seller].push(stockInInfo);
-             storeQuantity++; 
+             storeRecordNum[_seller]++;
             
         }
         
@@ -380,8 +437,8 @@ contract StockIn{
 }
 
 /**
- * ≥ˆø‚π‹¿Ì∫œ‘º
- * ÷˜“™π¶ƒ‹
+ * 出库管理合约
+ * 主要功能
  * 
  */ 
 contract StockOut{
@@ -389,13 +446,14 @@ contract StockOut{
     CoStockBasicInformation public coStockBasicInformation;
     
     address public owner;
-    uint public sellQuantity = 0;
     address[] public buyers;
+    uint public buyersNum = 0;
     StockOutInfo stockOutInfo;
     
-    //œ˙ €º«¬º
-    //¬Úº“ => ≥ˆªıµ•œÍ«È
-    mapping(address => StockOutInfo[]) sellRecord;
+    //销售记录
+    //买家 => 出货单详情
+    mapping(address => StockOutInfo[]) public sellRecord;
+    mapping(address => uint) public sellRecordNum;
     
     struct StockOutInfo{
         string stockName;
@@ -403,7 +461,7 @@ contract StockOut{
         string buyerName;
         uint quantity;
         
-        //ºŸ…ËŒ™ø…“‘ ∂±¡∏ ≥µƒŒ®“ª¥˙¬Î£°£°£°£°£°£°£°£°£°£°£°
+        //假设为可以识别粮食的唯一代码！！！！！！！！！！！
         uint qrCode;
     }
     
@@ -428,7 +486,8 @@ contract StockOut{
              stockOutInfo.quantity = _quantity;
              stockOutInfo.qrCode = _stockBasicInfo.getStockQrCode(_stockName);
              sellRecord[_buyer].push(stockOutInfo);
-             sellQuantity++;
+             sellRecordNum[_buyer]++;
+             buyersNum++;
              
         } else {
             
@@ -445,6 +504,7 @@ contract StockOut{
             
             if(flag == false){
                 buyers.push(_buyer);
+                buyersNum++;
             }
             
              stockOutInfo.stockName = _stockName;
@@ -453,7 +513,7 @@ contract StockOut{
              stockOutInfo.quantity = _quantity;
              stockOutInfo.qrCode = _stockBasicInfo.getStockQrCode(_stockName);
              sellRecord[_buyer].push(stockOutInfo);
-             sellQuantity++;
+             sellRecordNum[_buyer]++;
             
         }
         
@@ -461,7 +521,7 @@ contract StockOut{
     }
 }
 
-library StringUtils {
+contract StringUtils {
     /// @dev Does a byte-by-byte lexicographical comparison of two strings.
     /// @return a negative number if `_a` is smaller, zero if they are equal
     /// and a positive numbe if `_b` is smaller.
