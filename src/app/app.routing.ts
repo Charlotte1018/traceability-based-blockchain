@@ -18,7 +18,7 @@ import { AdminComponent } from './admin/admin.component';
 import { SupplyComponent } from './admin/supply/supply.component';
 
 //supply
-import {RegisterBasicInfoComponent} from './admin/supply';
+import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent } from './admin/supply';
 
 
 
@@ -61,12 +61,24 @@ const routes: Routes = [
         component: SupplyComponent,
         children: [
           {
+            path: 'audit',
+            component: AuditComponent
+          },
+          {
             path: 'RegisterBasicInfo',
             component: RegisterBasicInfoComponent
           },
           {
             path: 'register',
             component: RegisterComponent
+          },
+          {
+            path: 'sell',
+            component: SellComponent
+          },
+          {
+            path: 'store',
+            component: StoreComponent
           },
         ]
       },

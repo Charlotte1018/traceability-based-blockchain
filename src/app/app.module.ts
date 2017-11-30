@@ -4,28 +4,28 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 //Component
 import { AppComponent } from './app.component';
-import {HomeComponent} from './components/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 //user
-import {UserComponent} from './user/user.component';
-import {UserLoginComponent} from './user/user-login/user-login.component';
-import {UserRegisterComponent} from './user/user-register/user-register.component';
+import { UserComponent } from './user/user.component';
+import { UserLoginComponent } from './user/user-login/user-login.component';
+import { UserRegisterComponent } from './user/user-register/user-register.component';
 //admin
-import {AdminComponent} from './admin/admin.component';
-import {SupplyComponent} from './admin/supply/supply.component';
+import { AdminComponent } from './admin/admin.component';
+import { SupplyComponent } from './admin/supply/supply.component';
 //supply
-import {RegisterBasicInfoComponent} from './admin/supply';
+import { RegisterBasicInfoComponent, SellComponent, StoreComponent, AuditComponent } from './admin/supply';
 
 
-import {SaleComponent} from './admin/sale/sale.component';
-import {StorageComponent} from './admin/storage/storage.component';
+import { SaleComponent } from './admin/sale/sale.component';
+import { StorageComponent } from './admin/storage/storage.component';
 //common
-import {RegisterComponent} from './components/register/register.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
 //Service
-import { HttpService,Web3Service }             from './service';
+import { HttpService, Web3Service } from './service';
 import { UserService } from './_services';
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 // ng-zorro-antd UI
@@ -47,18 +47,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UserComponent,
     UserLoginComponent,
     UserRegisterComponent,
-    
+
     //admin
     AdminComponent,
     SupplyComponent,
     //supply
     RegisterBasicInfoComponent,
+    SellComponent,
+    StoreComponent,
+
+    AuditComponent,
 
     SaleComponent,
     StorageComponent,
     //common
     RegisterComponent,
-    ],
+  ],
   providers: [
     ApiService,
     HttpService,

@@ -22,7 +22,7 @@ export class Web3Service {
     public UserManagementContractInstance;
     public AdminManagementAddress = '0xC20d4dCCaEfa881e51d4ad5A9d12D4267d9966c2';
     public AdminManagementContractInstance;
-    registerNum = 5;
+    registerNum = 10;
     registerAccounts;
     /**
     * 连接geth客户端
@@ -177,42 +177,74 @@ export class Web3Service {
         for (let i = 0; i < this.registerNum; i++) {
             addressArrays[i] = AdminManagementContractInstance.addressArrays.call(i);
         }
-        console.log(addressArrays);
+
         this.registerAccounts = addressArrays;
+        let registerAccounts = new Set(addressArrays);
+        console.log(registerAccounts);
         return addressArrays;
     }
-    register(account){
+    register(account) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
         let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
-        AdminManagementContractInstance.reject(account,{
-            from:AdminManagementContractInstance.administrator.call(),
-            gas:10000000
+        AdminManagementContractInstance.reject(account, {
+            from: AdminManagementContractInstance.administrator.call(),
+            gas: 10000000
         });
     }
-    approved(account){
+    searchRegisterInfo(account) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
         let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
-        AdminManagementContractInstance.approved(account,{
-            from:AdminManagementContractInstance.administrator.call(),
-            gas:10000000
+        let contractAddress = AdminManagementContractInstance.registerAddress.call(account);
+
+        let registerInfoContract = this.web3.eth.contract(RegisterAbi);
+        let registerInfoContractInstance = registerInfoContract.at(contractAddress);
+        // console.log('注册状态',registerInfoContractInstance.coName.call().toString());
+        let registerInfo = {
+
+            coName: registerInfoContractInstance.coName.call().toString(),
+            coAddress: registerInfoContractInstance.coAddress.call().toString(),
+            corpName: registerInfoContractInstance.corpName.call().toString(),
+            corpId: registerInfoContractInstance.corpId.call().toNumber(),
+            tel: registerInfoContractInstance.tel.call().toNumber(),
+            fax: registerInfoContractInstance.fax.call().toNumber(),
+            registerStatus: registerInfoContractInstance.registerStatus.call().toString()
+        }
+        
+        // console.log('注册的信息：',registerInfo);
+        return registerInfo;
+    }
+    approved(account) {
+        let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
+        let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
+        AdminManagementContractInstance.approved(account, {
+            from: AdminManagementContractInstance.administrator.call(),
+            gas: 10000000
+        });
+    }
+    reject(account) {
+        let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
+        let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
+        AdminManagementContractInstance.reject(account, {
+            from: AdminManagementContractInstance.administrator.call(),
+            gas: 10000000
         });
     }
     getStockBasicAddress(account) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
         let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
-        let stockBasicAddress= AdminManagementContractInstance.stockBasicAddress.call(account);
-        
+        let stockBasicAddress = AdminManagementContractInstance.stockBasicAddress.call(account);
+
     }
 
     getStockInAddress(account) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
         let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
-        let stockInAddress= AdminManagementContractInstance.stockInAddress.call(account);
+        let stockInAddress = AdminManagementContractInstance.stockInAddress.call(account);
     }
     getStockOutAddress(account) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
         let AdminManagementContractInstance = AdminManagementContract.at(this.AdminManagementAddress);
-        let stockOutAddress= AdminManagementContractInstance.stockOutAddress.call(account);
+        let stockOutAddress = AdminManagementContractInstance.stockOutAddress.call(account);
     }
 
 

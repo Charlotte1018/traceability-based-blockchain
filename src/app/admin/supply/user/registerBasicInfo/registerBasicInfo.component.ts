@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Web3Service } from '../../../service';
+import { Web3Service } from '../../../../service';
 @Component({
-  selector: 'register',
+  selector: 'registerBasicInfo',
   templateUrl: './registerBasicInfo.component.html',
   styleUrls: ['./registerBasicInfo.component.scss']
 })

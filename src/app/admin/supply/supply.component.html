@@ -13,7 +13,7 @@
               <a [routerLink]="['register']">管理员</a>
             </li>
             <li nz-menu-item>
-              <a [routerLink]="['about']">管理员审核</a>
+              <a [routerLink]="['audit']">管理员审核</a>
             </li>
           </ul>
       </li>
@@ -41,9 +41,9 @@
         </span>
         <ul>
           <li nz-menu-item>
-            <a [routerLink]="['home/about']">创建仓库基本信息</a>
+            <a [routerLink]="['store']">入库基本信息</a>
           </li>
-          <li nz-menu-item>入库</li>
+          <!-- <li nz-menu-item>入库</li> -->
         </ul>
       </li>
       <li nz-submenu>
@@ -53,7 +53,7 @@
         </span>
         <ul>
           <li nz-menu-item>
-            <a [routerLink]="['home/about']">创建仓库基本信息</a>
+            <a [routerLink]="['sell']">出库基本信息</a>
           </li>
           <li nz-menu-item>出库</li>
         </ul>

@@ -1,0 +1,47 @@
+<div class="wrap">
+    <h1>出库信息</h1>
+    <div class="divider mt"></div>
+    <div class="center">
+        <form>
+            <!-- <div class="">
+            <div *ngFor='let form of forms' nz-row class="mt">
+              <label for="name" class="label" nz-col [nzMd]="{ span: 2 }">{{form.name}}</label>
+              <input type="text" [(ngModel)]='form.bind' name='form.bind' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control" id="name" required placeholder="{{form.placeholder}}">
+            </div>
+          </div> -->
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">账户地址</label>
+                <input type="text" [(ngModel)]='sell.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="请输入账户地址">
+            </div>
+
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">账户密码</label>
+                <input type="text" [(ngModel)]='sell.password' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="请输入账户密码">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">销售对象</label>
+                <input type="text" [(ngModel)]='sell._buyer' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="销售对象">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">购粮者姓名</label>
+                <input type="text" [(ngModel)]='sell._buyerName' name='registerInfo.coAddress' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="购粮者姓名">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">货位号</label>
+                <input type="text" [(ngModel)]='sell._stockName' name='registerInfo.corpName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="货位号">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 }">销售粮食数量</label>
+                <input type="text" [(ngModel)]='sell._quantity' name='registerInfo.corpId' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}"
+                    class="form-control" id="name" required placeholder="销售粮食数量">
+            </div>
+            <button type="submit" class="btn btn-success mt" (click)='sells()'>创建出库信息</button>
+        </form>
+    </div>
+
+</div>

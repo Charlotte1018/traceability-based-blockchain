@@ -1,0 +1,78 @@
+<div class="wrap">
+    <h1>管理员审核注册信息</h1>
+    <div class="divider mt"></div>
+    <div class="center">
+        <h3 class="title">审核</h3>
+        <nz-table #nzTable [nzIsPagination]="false" class="mt">
+            <thead nz-thead>
+                <tr>
+                    <th nz-th>
+                        <span>注册企业</span>
+                    </th>
+                    <th nz-th>
+                        <span>审核通过</span>
+                    </th>
+                    <th nz-th>
+                        <span>审核拒绝</span>
+                    </th>
+                    <th nz-th>
+                        <span>查询</span>
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody nz-tbody *ngFor='let register of registerAccounts'>
+                <tr nz-tbody-tr>
+                    <td nz-td>{{register}}</td>
+                    <td nz-td><button type="submit" class="btn btn-success btn-sm mt" (click)='approved(register)'>同意</button></td>
+                    <td nz-td><button type="submit" class="btn btn-danger btn-sm mt" (click)='reject(register)'>拒绝</button></td>
+                    <td nz-td><button type="submit" class="btn btn-primary btn-sm mt" (click)='search(register)'>查询注册信息</button></td>
+                    
+                </tr>
+            </tbody>
+        </nz-table>
+        <!-- <button type="submit" class="btn btn-success btn-sm mt" (click)='approved()'>同意</button> -->
+        <!-- <button type="submit" class="btn btn-danger btn-sm mt" (click)='reject()'>拒绝</button> -->
+      <div *ngIf='registerInfo'>
+        <h3 class="title">注册信息</h3>
+        <nz-table #nzTable [nzIsPagination]="false" class="mt">
+            <thead nz-thead>
+                <tr>
+                    <th nz-th>
+                        <span>企业名称</span>
+                    </th>
+                    <th nz-th>
+                        <span>企业地址</span>
+                    </th>
+                    <th nz-th>
+                        <span>法人代表</span>
+                    </th>
+                    <th nz-th>
+                        <span>身份证号</span>
+                    </th>
+                    <th nz-th>
+                        <span>电话</span>
+                    </th>
+                    <th nz-th>
+                        <span>传真</span>
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody nz-tbody>
+                <tr nz-tbody-tr>
+                    <td nz-td>{{registerInfo.coName}}</td>
+                    <td nz-td>{{registerInfo.coAddress}}</td>
+                    <td nz-td>{{registerInfo.corpName}}</td>
+                    <td nz-td>{{registerInfo.corpId}}</td>
+                    <td nz-td>{{registerInfo.tel}}</td>
+                    <td nz-td>{{registerInfo.fax}}</td>
+                    <!-- <td nz-td>{{registerInfo.registerStatus}}</td> -->
+                    
+                </tr>
+            </tbody>
+        </nz-table>
+      </div>
+    </div>
+  
+  </div>

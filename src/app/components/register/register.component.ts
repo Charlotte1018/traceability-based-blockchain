@@ -75,6 +75,7 @@ export class RegisterComponent implements OnInit {
     let register = this.registerInfo;
     this.web3Service.Register(register);
     console.log(this.registerInfo);
+    alert('用户注册成功，等待审核...');
   }
 
 }
