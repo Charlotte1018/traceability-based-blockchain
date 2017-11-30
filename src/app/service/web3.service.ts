@@ -229,9 +229,14 @@ export class Web3Service {
         let contractAddress = AdminManagementContractInstance.stockInAddress.call(account);
         let Contract = this.web3.eth.contract(StockInAbi);
         let ContractInstance = Contract.at(contractAddress);
-        let info = ContractInstance.storeRecordNum.call(seller).toNumber();
-        console.log(info);
-        // return info;
+        let storeRecordNum = ContractInstance.storeRecordNum.call(seller).toNumber();
+        let insInfo=[];
+        for (let i=0;i<storeRecordNum;i++){
+            insInfo[i]=ContractInstance.storeRecord.call(seller,i);
+        }
+        // let info = ContractInstance.storeRecord.call(seller,storeRecordNum);
+        console.log(insInfo);
+        return insInfo;
     }
     searchStockOutInfo(account, buyer) {
         let AdminManagementContract = this.web3.eth.contract(AdminManagementAbi);
@@ -240,9 +245,14 @@ export class Web3Service {
 
         let Contract = this.web3.eth.contract(StockOutAbi);
         let ContractInstance = Contract.at(contractAddress);
-        let info = ContractInstance.sellRecordNum.call(buyer);
-        console.log(info);
-        return info;
+        let sellRecordNum = ContractInstance.sellRecordNum.call(buyer).toNumber();
+        let outsInfo=[];
+        for (let i=0;i<sellRecordNum;i++){
+            outsInfo[i]=ContractInstance.sellRecord.call(buyer,i);
+        }
+        // let info = ContractInstance.sellRecord.call(buyer,sellRecordNum);
+        console.log(outsInfo);
+        return outsInfo;
     }
     approved(account) {
         let coinbase = this.web3.eth.accounts[0];

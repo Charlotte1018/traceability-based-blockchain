@@ -10,8 +10,8 @@ export class sellStoreComponent implements OnInit {
     AdminManagementContractInstance;
     registerAccounts;
     registerInfo;
-    stockInInfo;
-    stockOutInfo;
+    stockInInfos;
+    stockOutInfos;
     basicStock={
         name:''
     }
@@ -57,14 +57,14 @@ export class sellStoreComponent implements OnInit {
     searchStockInInfo() {
         let acc=this.user.account;
         let seller=this.seller;
-        this.stockInInfo=this.web3Service.searchStockInInfo(acc,seller);
+        this.stockInInfos=this.web3Service.searchStockInInfo(acc,seller);
         // console.log(this.stockInInfo);
     }
     searchStockOutInfo() {
         let acc=this.user.account;
         let buyer=this.buyer;
-        this.stockOutInfo=this.web3Service.searchStockOutInfo(acc,buyer);
-        console.log(this.stockOutInfo);
+        this.stockOutInfos=this.web3Service.searchStockOutInfo(acc,buyer);
+        // console.log(this.stockOutInfos);
     }
 
 }

@@ -5,17 +5,17 @@
         <form>
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">查询</label>
-                <input type="text" [(ngModel)]='user.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                <input type="text" [(ngModel)]='user.account' name='user.account' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入您的账户地址">
             </div>
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">密码</label>
-                <input type="text" [(ngModel)]='user.password' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                <input type="text" [(ngModel)]='user.password' name='user.password' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入您的密码">
             </div>
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">仓库名称</label>
-                <input type="text" [(ngModel)]='basicStock.name' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                <input type="text" [(ngModel)]='basicStock.name' name='basicStock.name' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入仓库名称">
             </div>
 
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="wrap mt col-lg-12">
-    <h1>出入库查询</h1>
+    <h1>入库查询</h1>
     <div class="divider mt"></div>
     <div class="center">
         <form>
@@ -37,24 +37,139 @@
           </div> -->
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">查询</label>
-                <input type="text" [(ngModel)]='user.account' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                <input type="text" [(ngModel)]='user.account' name='user.account' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入您的账户地址">
             </div>
-            <div nz-row class="mt">
+            <!-- <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">买家</label>
                 <input type="text" [(ngModel)]='buyer' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入买家账户">
-            </div>
+            </div> -->
             <div nz-row class="mt">
                 <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">卖家</label>
-                <input type="text" [(ngModel)]='seller' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                <input type="text" [(ngModel)]='seller' name='seller' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
                     id="name" required placeholder="请输入卖家账户">
             </div>
 
 
             <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockInInfo()'>查询入库信息</button>
+            <!-- <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockOutInfo()'>查询出库信息</button> -->
+        </form>
+
+        
+    </div>
+
+</div>
+<div *ngIf='stockInInfos' class="wrap mt col-lg-12">
+    <h3 class="title">入库信息</h3>
+    <nz-table #nzTable [nzIsPagination]="false" class="mt">
+        <thead nz-thead>
+            <tr>
+                
+                <th nz-th>
+                    <span>货位号</span>
+                </th>
+                <th nz-th>
+                    <span>来源对象</span>
+                </th>
+                <th nz-th>
+                    <span>来源企业</span>
+                </th>
+                <th nz-th>
+                    <span>入库容量</span>
+                </th>
+                <th nz-th>
+                    <span>入库码</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor='let stockInInfo of stockInInfos'>
+                <!-- <td nz-td>{{registerStatus[registerInfo.registerStatus]}}</td> -->
+                <td nz-td>{{stockInInfo[0]}}</td>
+                <td nz-td>{{stockInInfo[1]}}</td>
+                <td nz-td>{{stockInInfo[2]}}</td>
+                <td nz-td>{{stockInInfo[3]}}</td>
+                <td nz-td>{{stockInInfo[4]}}</td>
+                <!-- <td nz-td>{{registerInfo.registerStatus}}</td> -->
+
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+<div class="wrap mt col-lg-12 mb">
+    <h1>出库查询</h1>
+    <div class="divider mt"></div>
+    <div class="center">
+        <form>
+            <!-- <div class="">
+            <div *ngFor='let form of forms' nz-row class="mt">
+              <label for="name" class="label" nz-col [nzMd]="{ span: 2 }">{{form.name}}</label>
+              <input type="text" [(ngModel)]='form.bind' name='form.bind' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control" id="name" required placeholder="{{form.placeholder}}">
+            </div>
+          </div> -->
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">查询</label>
+                <input type="text" [(ngModel)]='user.account' name='user.account' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入您的账户地址">
+            </div>
+            <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">买家</label>
+                <input type="text" [(ngModel)]='buyer' name='buyer' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入买家账户">
+            </div>
+            <!-- <div nz-row class="mt">
+                <label for="name" class="label" nz-col [nzMd]="{ span: 3 ,offset:1}">卖家</label>
+                <input type="text" [(ngModel)]='seller' name='registerInfo.coName' class="input" nz-col [nzMd]="{ span: 16 ,offset:1}" class="form-control"
+                    id="name" required placeholder="请输入卖家账户">
+            </div> -->
+
+
+            <!-- <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockInInfo()'>查询入库信息</button> -->
             <button type="submit" class="btn btn-success mt col-lg-2 col-lg-offset-5" (click)='searchStockOutInfo()'>查询出库信息</button>
         </form>
+
+        
     </div>
+
+</div>
+<div *ngIf='stockOutInfos' class="wrap mt col-lg-12">
+    <h3 class="title">出库信息</h3>
+    <nz-table #nzTable [nzIsPagination]="false" class="mt">
+        <thead nz-thead>
+            <tr>
+                
+                <th nz-th>
+                    <span>货位号／仓库名称</span>
+                </th>
+                <th nz-th>
+                    <span>销售对象</span>
+                </th>
+                <th nz-th>
+                    <span>购粮者姓名</span>
+                </th>
+                <th nz-th>
+                    <span>出库容量</span>
+                </th>
+                <th nz-th>
+                    <span>入库码</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor='let stockOutInfo of stockOutInfos'>
+                <!-- <td nz-td>{{registerStatus[registerInfo.registerStatus]}}</td> -->
+                <td nz-td>{{stockOutInfos[0]}}</td>
+                <td nz-td>{{stockOutInfos[1]}}</td>
+                <td nz-td>{{stockOutInfos[2]}}</td>
+                <td nz-td>{{stockOutInfos[3]}}</td>
+                <td nz-td>{{stockOutInfos[4]}}</td>
+                <!-- <td nz-td>{{registerInfo.registerStatus}}</td> -->
+
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+<div class="mt">
 
 </div>
