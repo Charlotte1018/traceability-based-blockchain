@@ -2,6 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
 
+import { AtestModule } from './components/atest/atest.module';
+
 /*
 *user
 */
@@ -85,6 +87,7 @@ const routes: Routes = [
             path: 'search',
             component: sellStoreComponent
           },
+          { path: 'atest', loadChildren: './components/atest/atest.module#AtestModule' },
         ]
       },
       {
